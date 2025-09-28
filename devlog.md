@@ -1,48 +1,46 @@
-# 開發日誌
+# 開發日誌: `app.py` - 互動式線性迴歸視覺化工具
 
-## 2025-09-29
+## 專案啟動 (2025-09-28)
 
-### Prompt 1
-*   **使用者**: 幫我將整個專案推送至github 網址https://github.com/mimimaomao11/AIoT-HW1
+### 1. **目標與框架選擇**
+*   **目標**: 建立一個互動式 Web 應用程式，用於視覺化展示線性迴歸的關鍵概念。
+*   **框架**: 選擇 **Streamlit**，因為它能快速將 Python 腳本轉換為 Web UI，非常適合數據科學專案的原型設計。
+*   **核心函式庫**: `numpy` 和 `pandas` 用於數據操作，`scikit-learn` 用於模型訓練，`matplotlib` 用於繪圖。
 
-### 執行紀錄
-1.  **`git status`**
-    *   **結果**: `fatal: not a git repository` (失敗，非 git 儲存庫)
-2.  **`git init`**
-    *   **結果**: `Initialized empty Git repository` (成功，初始化儲存庫)
-3.  **`git remote add origin https://github.com/mimimaomao11/AIoT-HW1`**
-    *   **結果**: 成功
-4.  **`git add .`**
-    *   **結果**: 成功 (將所有檔案加入暫存區)
-5.  **`git commit -m "Initial commit"`**
-    *   **結果**: `[master (root-commit) 8959b1f] Initial commit` (成功，建立初始版本)
-6.  **`git push -u origin master`**
-    *   **結果**: `* [new branch]      master -> master` (成功，推送到 GitHub)
+### 2. **UI 結構設計 (CRISP-DM)**
+*   **頁面標題**: 設定了應用的主標題 `HW1-1: Interactive Linear Regression Visualizer`。
+*   **側邊欄 (Sidebar)**: 決定將所有使用者可調參數放在側邊欄，以保持主畫面的整潔。這也符合 CRISP-DM 中的 **資料理解** 階段，讓使用者能控制數據生成過程。
+*   **主畫面**: 用於展示模型評估結果和最終的視覺化圖表。
 
----
+### 3. **數據生成模組**
+*   **使用者輸入**: 在側邊欄加入了三個 `st.slider`，分別用於控制 `資料點數量 (n)`、`斜率 (a)` 和 `雜訊變異數`。
+*   **`generate_data` 函式**: 建立了一個函式，根據線性方程式 `y = ax + b + noise` 生成模擬數據。
+    *   使用 `np.random.rand` 生成特徵 `X`。
+    *   使用 `np.random.randn` 引入常態分佈的雜訊。
+    *   將 `X` 和 `y` 合併到一個 Pandas DataFrame 中，方便後續處理。
+*   **快取 (`@st.cache_data`)**: 為 `generate_data` 函式加上快取裝飾器，確保在參數不變的情況下，不會重複生成數據，提升應用效能。
 
-### Prompt 2
-*   **使用者**: streamlit連結為https://aiot-hw1-jgvddr7pkczushaemhatrv.streamlit.app/ 請幫我更新至README以及開發日誌只要留下prompt以及對專案開發有關的詞(修正bug等)，並幫我同步至github
+### 4. **模型訓練模組**
+*   **`fit_model` 函式**: 建立了一個函式，接收數據並使用 `sklearn.linear_model.LinearRegression` 進行模型訓練。
+*   **快取**: 同樣為 `fit_model` 加上快取，避免在數據不變時重複訓練模型。
+*   **預測**: 呼叫 `model.predict(X)` 來生成迴歸線的預測值 `y_pred`。
 
-### 執行紀錄
-1.  **讀取 `README.md` 和 `devlog.md`**
-    *   **結果**: 成功
-2.  **寫入 `README.md`** (更新 Streamlit 連結)
-    *   **結果**: 成功
-3.  **寫入 `devlog.md`** (根據 prompt 精簡內容)
-    *   **結果**: 成功
-4.  **`git add README.md devlog.md`**
-    *   **結果**: 成功
-5.  **`git commit -m "Update README with Streamlit link and filter devlog"`**
-    *   **結果**: `[master c1c497c] Update README...` (成功)
-6.  **`git push`**
-    *   **結果**: `8959b1f..c1c497c  master -> master` (成功，同步變更)
+### 5. **模型評估與離群值分析**
+*   **係數展示**: 在主畫面使用 `st.metric` 來清晰地顯示模型學習到的 `斜率` 和 `截距`。
+*   **殘差計算**: 計算每個數據點的實際值 `y` 和預測值 `y_pred` 之間的絕對差異（殘差）。
+*   **離群值識別**: 根據殘差大小對數據進行排序，並選出前 5 個最大的點作為離群值。
+*   **結果呈現**: 使用 `st.dataframe` 將前 5 個離群值的 `X`, `y` 和 `residuals` 顯示在表格中。
 
----
+### 6. **視覺化模組**
+*   **圖表建立**: 使用 `matplotlib.pyplot.subplots` 建立一個圖表物件。
+*   **數據點繪製**: 使用 `ax.scatter` 繪製原始數據的散點圖。
+*   **迴歸線繪製**: 使用 `ax.plot` 將模型的預測結果繪製成一條紅色的迴歸線。
+*   **離群值標註**:
+    *   在圖表上特別標示出前 5 個離群值（紅色、較大的點）。
+    *   使用 `ax.text` 在離群值旁邊顯示其座標，方便識別。
+*   **圖表美化**: 加入標題、軸標籤、圖例和網格，提升圖表的可讀性。
+*   **顯示圖表**: 最後使用 `st.pyplot(fig)` 將 Matplotlib 圖表嵌入到 Streamlit 應用中。
 
-### Prompt 3
-*   **使用者**: devlog請幫我從一開始到現在所有的指令及結果簡單記錄下來
-
-### 執行紀錄
-1.  **寫入 `devlog.md`** (更新日誌以包含所有指令歷史)
-    *   **結果**: 執行中...
+### 7. **最終潤飾**
+*   在各個區塊加入了 Markdown 說明文字，引導使用者理解每個部分的功能，並遵循 CRISP-DM 的流程進行解釋。
+*   在視覺化圖表下方加入 `st.info`，提供如何解讀圖表的提示。
