@@ -1,5 +1,7 @@
 # HW1-1: 互動式線性迴歸視覺化工具
 
+**Live Demo:** [https://aiot-hw1-jgvddr7pkczushaemhatrv.streamlit.app/](https://aiot-hw1-jgvddr7pkczushaemhatrv.streamlit.app/)
+
 本專案是一個使用 Streamlit 建構的互動式 Web 應用程式，用於展示簡單線性迴歸的原理。它允許使用者生成模擬數據、擬合迴歸模型並即時視覺化結果。
 
 此應用程式遵循 **CRISP-DM (跨行業數據挖掘標準流程)** 方法論進行建構。
