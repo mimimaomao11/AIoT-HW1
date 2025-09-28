@@ -50,47 +50,68 @@ Make sure the code is ready to run and deploy without modification.
 
 ## 2025-09-29
 
-### Prompt 1
+### Prompt 1: 推送至 GitHub
 *   **使用者**: 幫我將整個專案推送至github 網址https://github.com/mimimaomao11/AIoT-HW1
 
 ### 執行紀錄
-1.  **`git status`**
-    *   **結果**: `fatal: not a git repository` (失敗，非 git 儲存庫)
-2.  **`git init`**
-    *   **結果**: `Initialized empty Git repository` (成功，初始化儲存庫)
-3.  **`git remote add origin https://github.com/mimimaomao11/AIoT-HW1`**
-    *   **結果**: 成功
-4.  **`git add .`**
-    *   **結果**: 成功 (將所有檔案加入暫存區)
-5.  **`git commit -m "Initial commit"`**
-    *   **結果**: `[master (root-commit) 8959b1f] Initial commit` (成功，建立初始版本)
-6.  **`git push -u origin master`**
-    *   **結果**: `* [new branch]      master -> master` (成功，推送到 GitHub)
+1.  **`git status`** -> `fatal: not a git repository`
+2.  **`git init`** -> `Initialized empty Git repository`
+3.  **`git remote add origin ...`** -> 成功
+4.  **`git add .`** -> 成功
+5.  **`git commit -m "Initial commit"`** -> `[master (root-commit) 8959b1f] Initial commit`
+6.  **`git push -u origin master`** -> `* [new branch] master -> master`
 
 ---
 
-### Prompt 2
+### Prompt 2: 更新 README 與開發日誌
 *   **使用者**: streamlit連結為https://aiot-hw1-jgvddr7pkczushaemhatrv.streamlit.app/ 請幫我更新至README以及開發日誌只要留下prompt以及對專案開發有關的詞(修正bug等)，並幫我同步至github
 
 ### 執行紀錄
-1.  **讀取 `README.md` 和 `devlog.md`**
-    *   **結果**: 成功
-2.  **寫入 `README.md`** (更新 Streamlit 連結)
-    *   **結果**: 成功
-3.  **寫入 `devlog.md`** (根據 prompt 精簡內容)
-    *   **結果**: 成功
-4.  **`git add README.md devlog.md`**
-    *   **結果**: 成功
-5.  **`git commit -m "Update README with Streamlit link and filter devlog"`**
-    *   **結果**: `[master c1c497c] Update README...` (成功)
-6.  **`git push`**
-    *   **結果**: `8959b1f..c1c497c  master -> master` (成功，同步變更)
+1.  **讀取/寫入檔案** -> 成功更新 `README.md` 和 `devlog.md`
+2.  **`git add README.md devlog.md`** -> 成功
+3.  **`git commit -m "Update README..."`** -> `[master c1c497c] Update README...`
+4.  **`git push`** -> `8959b1f..c1c497c master -> master`
 
 ---
 
-### Prompt 3
+### Prompt 3: 記錄所有指令
 *   **使用者**: devlog請幫我從一開始到現在所有的指令及結果簡單記錄下來
 
 ### 執行紀錄
-1.  **寫入 `devlog.md`** (更新日誌以包含所有指令歷史)
-    *   **結果**: 執行中...
+1.  **寫入 `devlog.md`** -> 成功 (更新日誌以包含所有指令歷史)
+2.  **`git add devlog.md`** -> 成功
+3.  **`git commit -m "Update devlog..."`** -> `[master 93ea167] Update devlog...`
+4.  **`git push`** -> `c1c497c..93ea167 master -> master`
+
+---
+
+### Prompt 4: 根據 app.py 生成開發日誌
+*   **使用者**: 幫我從一開始的app.py生成建立一個開發日誌
+
+### 執行紀錄
+1.  **讀取 `app.py`** -> 成功
+2.  **寫入 `devlog.md`** -> 成功 (基於 `app.py` 重新生成開發日誌)
+3.  **`git add devlog.md`** -> 成功
+4.  **`git commit -m "Recreate devlog..."`** -> `[master 8e3e57a] Recreate devlog...`
+5.  **`git push`** -> `93ea167..8e3e57a master -> master`
+
+---
+
+### Prompt 5: 返回上一個版本並補充日誌
+*   **使用者**: 幫我返回上一個版本 並在前面加入2025-09-28的版本...
+
+### 執行紀錄
+1.  **`git checkout 93ea167 -- devlog.md`** -> 成功 (還原 `devlog.md`)
+2.  **讀取/寫入 `devlog.md`** -> 成功 (在頂部加入 2025-09-28 的初始 prompt)
+3.  **`git add devlog.md`** -> 成功
+4.  **`git commit -m "Revert devlog..."`** -> `[master 3e195fe] Revert devlog...`
+5.  **`git push`** -> `8e3e57a..3e195fe master -> master`
+
+---
+
+### Prompt 6: 完成日誌
+*   **使用者**: 保留現在並繼續把剩下的寫完
+
+### 執行紀錄
+1.  **讀取/寫入 `devlog.md`** -> 成功 (完成所有歷史紀錄的填寫)
+2.  **`git add devlog.md`** -> 執行中...
